@@ -212,11 +212,33 @@ exo_carres_2.forEach((carre) => {
     last_class = carre.getAttribute("data-color");
   });
 });
-
+const imgs_url = 'https://pixabay.com/api/?key=15935321-ecb5695630be7347dafccf251&q=developement&per_page=200';
+const request = new XMLHttpRequest();
+request.open('GET', imgs_url);
+request.responseType = 'json';
+request.send();
+let last_img_clicked;
+function add_Img_exo() {
+  const imgs = request.response;
+  const new_img = document.createElement("img");
+  const img = Math.floor(Math.random() * 200);
+  new_img.src = imgs.hits[img].webformatURL;
+  //new_img.style.width = imgs.hits[img].previewWidth+"px";
+  //new_img.style.height = imgs.hits[img].previewHeight+"px";
+  new_img.style.width = "300px";
+  new_img.style.height = "150px";
+  new_img.addEventListener('click', () => {
+    last_img_clicked = new_img;
+  })
+  new_img.addEventListener('ondragstart', function(event) {
+    event.dataTransfer.setData('text/plain',null);
+  }, false);
+  document.getElementById("exo-img-div-g").appendChild(new_img);
+}
+document.getElementById("add-img-exo-bonus").addEventListener('click', add_Img_exo);
 const exobonusDivGauche = document.getElementById("exo-img-div-g");
 const exobonusImgsGauche = exobonusDivGauche.getElementsByTagName("img");
 const exobonusImgDroite = document.getElementById("idroite");
-let last_img_clicked;
 let dragged;
 Array.from(exobonusImgsGauche).forEach((img) => {
   img.draggable = true;
