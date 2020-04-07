@@ -86,37 +86,55 @@ exo[10].s1.addEventListener('change', () => {
       selected_options[1].push(option.text);
     }
   });
-  exo[10].ch1.value = selected_options[0];
-  exo[10].ch2.value = selected_options[1];
+  exo[10].ch1.value = selected_options[0].join(", ");
+  exo[10].ch2.value = selected_options[1].join(", ");
+})
+let index = 6;
+exo[10].b1.addEventListener('click', () => {
+  console.log("Click");
+  const new_option = document.createElement("option");
+  const new_option_text = document.createTextNode("Item "+index);
+  new_option.appendChild(new_option_text);
+  new_option.value = index;
+  exo[10].s1.appendChild(new_option);
+  index++;
 })
 
 exo[11].gauche.addEventListener('click', () => {
-  const tab = exo[11].c1;
-  const new_tab = [];
-  let c=0;
-  for(i=1; i < tab.length;i++) {
-    new_tab.push(tab[i].value);
-  }
-  new_tab.push(tab[0].value);
-  tab.forEach(element => {
-    element.value = new_tab[c];
-    c++;
-  })
+  permutte(1);
 })
 
 exo[11].droite.addEventListener('click', () => {
-  const tab = exo[11].c1;
-  const new_tab = [];
-  let c = 0;
-  new_tab.push(tab[tab.length-1].value);
-  for (i = 0; i < tab.length-1; i++) {
-    new_tab.push(tab[i].value);
-  }
-  tab.forEach(element => {
-    element.value = new_tab[c];
-    c++;
-  })
+  permutte(-1);
 })
+let index_value = 6;
+exo[11].b1.addEventListener('click', () => {
+  console.log("Click");
+  const new_input = document.createElement("input");
+  new_input.value = index_value;
+  new_input.type = "text";
+  new_input.name = "c1";
+  new_input.style.width = "51px";
+  document.getElementsByClassName("data-controls")[0].appendChild(new_input);
+  index_value++;
+})
+
+function permutte(sens) {
+  const tab = exo[11].c1;
+  let tab_tmp = [];
+
+  if (sens === 1) {
+    tab_tmp = Array.from(tab).slice(1).map(input => input.value);
+    tab_tmp.push(tab[0].value);
+  } else {
+    tab_tmp = Array.from(tab).slice(0, tab.length - 1).map(input => input.value);
+    tab_tmp.unshift(tab[tab.length - 1].value);
+  }
+
+  tab.forEach((element, c) => {
+    element.value = tab_tmp[c];
+  })
+}
 
 exo[12].droite.addEventListener('click', () => {
   Array.from(exo[12].s1.options).forEach(option => {
